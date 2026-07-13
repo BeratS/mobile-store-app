@@ -2,6 +2,7 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
+import { AppBar } from '@/components/ui/app-bar';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useUniwind } from 'uniwind';
@@ -13,7 +14,6 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[theme].tint,
-        headerShown: false,
         tabBarButton: HapticTab,
         tabBarStyle: {
           backgroundColor: Colors[theme].tabBarBackground,
@@ -27,13 +27,15 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <IconSymbol size={26} name="house.fill" color={color} />,
+          header: () => <AppBar title="Endava - Smart App" />
         }}
       />
       <Tabs.Screen
-        name="booking"
+        name="store"
         options={{
-          title: 'Bookings',
-          tabBarIcon: ({ color }) => <IconSymbol size={26} name="calendar" color={color} />,
+          title: 'Store',
+          tabBarIcon: ({ color }) => <IconSymbol size={26} name="bag.fill" color={color} />,
+          header: () => <AppBar title="Endava - Store" />
         }}
       />
       <Tabs.Screen
@@ -41,6 +43,7 @@ export default function TabLayout() {
         options={{
           title: 'AI Copilot',
           tabBarIcon: ({ color }) => <IconSymbol size={26} name="bubble.left.and.bubble.right.fill" color={color} />,
+          header: () => <AppBar title="Endava - AI Copilot" />
         }}
       />
       <Tabs.Screen
@@ -48,6 +51,7 @@ export default function TabLayout() {
         options={{
           title: 'Digital ID',
           tabBarIcon: ({ color }) => <IconSymbol size={26} name="person.badge.key.fill" color={color} />,
+          header: () => <AppBar title="Endava - Digital ID" />
         }}
       />
     </Tabs>

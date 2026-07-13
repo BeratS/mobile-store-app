@@ -26,8 +26,14 @@ const MAPPING: IconMapping = {
   'shield.fill': 'shield',
   'car.fill': 'directions-car',
   'monitor.fill': 'desktop-windows',
+  'light.down.fill': 'light-mode',
+  'dark.mode.fill': 'dark-mode',
   sparkles: 'auto-awesome',
   cpu: 'memory',
+  'bag.fill': 'shopping-bag',
+  'laptop': 'laptop',
+  'chair': 'chair',
+  'table': 'table-restaurant',
 };
 
 /**
@@ -38,16 +44,18 @@ const MAPPING: IconMapping = {
 export function IconSymbol({
   name,
   size = 24,
-  color,
-  style,
+  color = '',
+  style = {},
+  className = '',
 }: {
   name: IconSymbolName;
   size?: number;
-  color: string | OpaqueColorValue;
+  color?: string | OpaqueColorValue;
   style?: StyleProp<TextStyle>;
   weight?: SymbolWeight;
+  className?: string;
 }) {
   const mappedName = MAPPING[name] ?? 'help-outline';
 
-  return <MaterialIcons color={color} size={size} name={mappedName} style={style} />;
+  return <MaterialIcons color={color} size={size} name={mappedName} style={style} className={className || ''} />;
 }
