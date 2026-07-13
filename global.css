@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@import "uniwind";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* 1. Core Brand Color System Variables */
+  --color-primary: #ff5640;
+  --color-secondary: #7c3aed;
+  --color-background: #192b37;
+  --color-text: #ffffff;
+  --color-card: #233948;
+  --color-border: #233948;
+  --color-notification: #ff5640;
+
+  /* 2. Custom utility classes used in your workspace views */
+  --color-darkBg: var(--color-background);
+  --color-cardBg: var(--color-card);
+  --color-lightText: var(--color-text);
+  --color-mutedText: #94a3b8;
+}
+
+.dark {
+  /* Variables duplicate cleanly across layout scopes */
+  --color-primary: #ff5640;
+  --color-secondary: #7c3aed;
+  --color-background: #192b37;
+  --color-text: #ffffff;
+  --color-card: #233948;
+  --color-border: #233948;
+  --color-notification: #ff5640;
+
+  --color-darkBg: var(--color-background);
+  --color-cardBg: var(--color-card);
+  --color-lightText: var(--color-text);
+  --color-mutedText: #94a3b8;
+}
