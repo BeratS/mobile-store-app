@@ -44,6 +44,14 @@ export default function RootLayout() {
           headerShown: true,
           headerTitle: 'Booking',
         }} />
+        <Stack.Screen name="notifications" options={{
+          headerShown: true,
+          headerTitle: 'Notifications',
+        }} />
+        <Stack.Screen name="add-product" options={{
+          headerShown: true,
+          headerTitle: 'Add Product',
+        }} />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

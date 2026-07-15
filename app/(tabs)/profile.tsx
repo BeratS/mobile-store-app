@@ -1,41 +1,156 @@
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 export default function ProfileScreen() {
+  // Mock states for interactive settings
+  const [biometricsActive, setBiometricsActive] = useState(true);
+  const [nfcFastPass, setNfcFastPass] = useState(false);
+
   return (
-    <View className="flex-1 bg-white dark:bg-darkBg p-6">
-
-      <Text className="text-slate-900 dark:text-lightText text-2xl font-bold self-start mb-8">Digital Corporate Card</Text>
-
-      {/* Enterprise Security Access Smart Card */}
-      <View className="w-full bg-slate-900 dark:bg-cardBg aspect-[1.90/1] rounded-2xl p-6 shadow-xl relative overflow-hidden mb-8">
-        <View className="absolute -right-16 -bottom-16 w-48 h-48 bg-primary/10 rounded-full" />
-
-        <View className="flex-row justify-between items-start mb-6">
-          <View>
-            <Text className="text-white text-xl font-black uppercase tracking-wider">Endava</Text>
-            <Text className="text-primary text-xs font-bold uppercase tracking-widest mt-0.5">Senior Developer (Engineer)</Text>
+    <View className="flex-1 bg-white dark:bg-darkBg">
+      <ScrollView className="flex-1 px-6 pt-12" showsVerticalScrollIndicator={false}>
+        
+        {/* 1. Profile Header & Active Node */}
+        <View className="flex-row items-center justify-between mb-8">
+          <View className="flex-row items-center gap-4">
+            {/* Elegant initials badge */}
+            <View className="w-14 h-14 rounded-full bg-primary/10 border border-primary/20 items-center justify-center">
+              <Text className="text-primary font-black text-lg">BS</Text>
+            </View>
+            <View>
+              <Text className="text-slate-900 dark:text-lightText text-xl font-extrabold leading-none">Berat Sulimani</Text>
+              <Text className="text-slate-500 dark:text-mutedText text-xs font-semibold mt-1">Senior Developer • Endava</Text>
+            </View>
           </View>
-          <IconSymbol name="cpu" size={28} color="#ff5640" />
-        </View>
-
-        <View className="mt-auto flex-row justify-between items-end">
-          <View>
-            <Text className="text-white text-lg font-bold">Berat Sulimani</Text>
-            <Text className="text-slate-400 dark:text-mutedText text-xs">Product Engineering • ID: #88241</Text>
-          </View>
-          <View className="bg-white p-2 rounded-lg">
-            <IconSymbol name="shield.fill" size={40} color="#192b37" />
+          {/* Real-time system connection indicator */}
+          <View className="bg-emerald-500/10 px-3 py-1.5 rounded-full flex-row items-center gap-1.5 border border-emerald-500/20">
+            <View className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <Text className="text-emerald-500 font-extrabold text-[10px] uppercase tracking-wider">Connected</Text>
           </View>
         </View>
-      </View>
 
-      {/* Security Credentials info */}
-      <View className="w-full bg-slate-50 dark:bg-cardBg/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-        <Text className="text-slate-500 dark:text-mutedText text-center text-xs leading-relaxed">
-          🛡️ Biometrically encrypted with Device FaceID / Fingerprint. Revocable via enterprise dashboard MDM console.
-        </Text>
-      </View>
+        {/* 2. Premium Enterprise Security ID Card (ID-1 Aspect Ratio) */}
+        <View className="w-full bg-slate-800 dark:bg-slate-950 aspect-[1.58/1] rounded-3xl p-6 shadow-2xl relative overflow-hidden mb-6 border border-slate-800">
+          {/* Cybernetic geometric circles */}
+          <View className="absolute -right-20 -bottom-20 w-56 h-56 bg-primary/10 rounded-full border border-primary/10" />
+          <View className="absolute -left-12 -top-12 w-36 h-36 bg-slate-900 rounded-full" />
+
+          {/* Card Top Row */}
+          <View className="flex-row justify-between items-start z-10">
+            <View>
+              <Text className="text-white text-lg font-black tracking-widest leading-none">ENDAVA</Text>
+              <Text className="text-primary text-[9px] font-bold uppercase tracking-widest mt-1">
+                Senior Developer (Engineer)
+              </Text>
+            </View>
+            {/* Corporate smartchip icon */}
+            <View className="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl">
+              <IconSymbol name="cpu" size={20} color="#ff5640" />
+            </View>
+          </View>
+
+          {/* Card Bottom Row */}
+          <View className="mt-auto flex-row justify-between items-end z-10">
+            <View>
+              <Text className="text-white font-extrabold text-base tracking-wide">Berat Sulimani</Text>
+              <Text className="text-slate-500 text-[10px] font-medium tracking-widest mt-0.5">
+                Product Engineering • ID: #88241
+              </Text>
+            </View>
+            {/* Hologram-style security badge */}
+            <View className="bg-white p-2 rounded-xl shadow-inner">
+              <IconSymbol name="shield.fill" size={24} color="#192b37" />
+            </View>
+          </View>
+        </View>
+
+        {/* 3. Corporate KPI Quick Stats Grid */}
+        <View className="flex-row gap-3 mb-8">
+          <View className="flex-1 bg-slate-100/50 dark:bg-cardBg p-3.5 rounded-2xl items-center border border-slate-200/40 dark:border-slate-800">
+            <Text className="text-slate-400 text-[10px] uppercase font-bold tracking-wider mb-1">Access Taps</Text>
+            <Text className="text-slate-900 dark:text-lightText font-extrabold text-base">248</Text>
+          </View>
+          <View className="flex-1 bg-slate-100/50 dark:bg-cardBg p-3.5 rounded-2xl items-center border border-slate-200/40 dark:border-slate-800">
+            <Text className="text-slate-400 text-[10px] uppercase font-bold tracking-wider mb-1">Active Bookings</Text>
+            <Text className="text-primary font-extrabold text-base">2</Text>
+          </View>
+          <View className="flex-1 bg-slate-100/50 dark:bg-cardBg p-3.5 rounded-2xl items-center border border-slate-200/40 dark:border-slate-800">
+            <Text className="text-slate-400 text-[10px] uppercase font-bold tracking-wider mb-1">Store Points</Text>
+            <Text className="text-slate-900 dark:text-lightText font-extrabold text-base">1,420</Text>
+          </View>
+        </View>
+
+        {/* 4. Security Credentials info */}
+        <View className="w-full bg-slate-100/60 dark:bg-cardBg/50 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-800 mb-8">
+          <Text className="text-slate-500 dark:text-mutedText text-center text-xs leading-relaxed">
+            🛡️ Your digital ID is biometrically encrypted with device credentials. It can be dynamically revoked by the company MDM admin console.
+          </Text>
+        </View>
+
+        {/* 5. Settings Segment: Credentials & Security */}
+        <Text className="text-slate-900 dark:text-lightText text-lg font-bold mb-3">Security & Access</Text>
+        <View className="bg-slate-100/30 dark:bg-cardBg/30 rounded-2xl border border-slate-200/40 dark:border-slate-800 mb-6 overflow-hidden">
+          
+          {/* Row 1: Biometric Access */}
+          <View className="flex-row justify-between items-center px-4 py-4 border-b border-slate-200/40 dark:border-slate-800">
+            <View className="flex-row items-center gap-3">
+              <IconSymbol name="shield.fill" size={18} color="#ff5640" />
+              <View>
+                <Text className="text-slate-900 dark:text-lightText font-bold text-sm">Biometric Lock</Text>
+                <Text className="text-slate-500 dark:text-mutedText text-[11px]">Require FaceID to unlock the pass</Text>
+              </View>
+            </View>
+            <Switch 
+              value={biometricsActive} 
+              onValueChange={setBiometricsActive} 
+              trackColor={{ true: '#ff5640', false: '#cbd5e1' }}
+            />
+          </View>
+
+          {/* Row 2: NFC Fast Pass */}
+          <View className="flex-row justify-between items-center px-4 py-4">
+            <View className="flex-row items-center gap-3">
+              <IconSymbol name="cpu" size={18} color="#3b82f6" />
+              <View>
+                <Text className="text-slate-900 dark:text-lightText font-bold text-sm">NFC Background Pass</Text>
+                <Text className="text-slate-500 dark:text-mutedText text-[11px]">Allow tapping without opening the app</Text>
+              </View>
+            </View>
+            <Switch 
+              value={nfcFastPass} 
+              onValueChange={setNfcFastPass} 
+              trackColor={{ true: '#ff5640', false: '#cbd5e1' }}
+            />
+          </View>
+
+        </View>
+
+        {/* 6. Settings Segment: Preferences */}
+        <Text className="text-slate-900 dark:text-lightText text-lg font-bold mb-3">General Preferences</Text>
+        <View className="bg-slate-100/30 dark:bg-cardBg/30 rounded-2xl border border-slate-200/40 dark:border-slate-800 mb-12 overflow-hidden">
+          
+          {/* Row 1: Theme Setup */}
+          <TouchableOpacity className="flex-row justify-between items-center px-4 py-4 border-b border-slate-200/40 dark:border-slate-800">
+            <View className="flex-row items-center gap-3">
+              <IconSymbol name="sparkles" size={18} color="#f59e0b" />
+              <Text className="text-slate-900 dark:text-lightText font-bold text-sm">Appearance Settings</Text>
+            </View>
+            <IconSymbol name="chevron.right" size={16} color="#64748b" />
+          </TouchableOpacity>
+
+          {/* Row 2: Sign Out */}
+          <TouchableOpacity className="flex-row justify-between items-center px-4 py-4">
+            <View className="flex-row items-center gap-3">
+              <IconSymbol name="person.badge.key.fill" size={18} color="#ef4444" />
+              <Text className="text-red-500 font-extrabold text-sm">Disconnect Card</Text>
+            </View>
+            <IconSymbol name="chevron.right" size={16} color="#ef4444" />
+          </TouchableOpacity>
+
+        </View>
+
+      </ScrollView>
     </View>
   );
 }

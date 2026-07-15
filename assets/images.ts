@@ -1,3 +1,3 @@
 export default {
-  Placeholder: require('./images/defaultImage.png'),
+  Placeholder: require('./images/placeholder.png'),
 };

@@ -34,6 +34,10 @@ const MAPPING: IconMapping = {
   'laptop': 'laptop',
   'chair': 'chair',
   'table': 'table-restaurant',
+  'clock.fill': 'access-time',
+  'announcement.fill': 'campaign',
+  'bell.fill': 'notifications',
+  'flame.fill': 'local-fire-department'
 };
 
 /**
