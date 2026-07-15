@@ -40,6 +40,9 @@ export default function RootLayout() {
     <ThemeProvider value={getAppTheme(theme)}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="nfc-simulate" options={{
+          headerShown: false,
+        }} />
         <Stack.Screen name="booking" options={{
           headerShown: true,
           headerTitle: 'Booking',
