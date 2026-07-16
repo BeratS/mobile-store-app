@@ -81,8 +81,8 @@ export default function LoginScreen() {
                             <Text className="text-slate-400 text-[10px] uppercase font-black tracking-widest mb-2 pl-1">
                                 Corporate Email
                             </Text>
-                            <View className="flex-row items-center bg-slate-900 border border-slate-800 rounded-2xl px-4 py-3.5 focus-within:border-primary">
-                                <IconSymbol name="person.badge.key.fill" size={16} color="#64748b" className="mr-3" />
+                            <View className="flex-row gap-3 items-center bg-slate-900 border border-slate-800 rounded-2xl px-4 min-h-14 focus-within:border-primary">
+                                <IconSymbol name="person.badge.key.fill" size={16} color="#64748b" />
                                 <TextInput
                                     placeholder="name@endava.com"
                                     placeholderTextColor="#475569"
@@ -90,7 +90,7 @@ export default function LoginScreen() {
                                     onChangeText={setEmail}
                                     autoCapitalize="none"
                                     keyboardType="email-address"
-                                    className="flex-1 text-white text-sm font-semibold h-5"
+                                    className="flex-1 text-white text-sm font-semibold h-5 pb-1"
                                 />
                             </View>
                         </View>
@@ -100,8 +100,8 @@ export default function LoginScreen() {
                             <Text className="text-slate-400 text-[10px] uppercase font-black tracking-widest mb-2 pl-1">
                                 Access Token / Password
                             </Text>
-                            <View className="flex-row items-center bg-slate-900 border border-slate-800 rounded-2xl px-4 py-3.5">
-                                <IconSymbol name="cpu" size={16} color="#64748b" className="mr-3" />
+                            <View className="flex-row gap-3 items-center bg-slate-900 border border-slate-800 rounded-2xl px-4 min-h-14">
+                                <IconSymbol name="cpu" size={16} color="#64748b" />
                                 <TextInput
                                     placeholder="••••••••••••"
                                     placeholderTextColor="#475569"
@@ -109,7 +109,7 @@ export default function LoginScreen() {
                                     onChangeText={setPassword}
                                     secureTextEntry
                                     autoCapitalize="none"
-                                    className="flex-1 text-white text-sm font-semibold h-5"
+                                    className="flex-1 text-white text-sm font-semibold h-5 pb-1"
                                 />
                             </View>
                         </View>
