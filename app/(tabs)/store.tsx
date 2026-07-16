@@ -124,11 +124,11 @@ export default function StoreScreen() {
                 )} */}
 
                 {/* 🌟 New Dynamic Image-to-Icon Frame Container 🌟 */}
-                <View className="bg-white dark:bg-slate-900/60 w-full aspect-4/3 rounded-2xl justify-center items-center mb-4 overflow-hidden border border-slate-200/20 dark:border-slate-800">
+                <View className="bg-slate-200 dark:bg-slate-900/60 w-full aspect-4/3 rounded-2xl justify-center items-center mb-4 overflow-hidden border border-slate-200/20 dark:border-slate-800">
                   <ProductImageOrIcon 
                     imageUri={product.image} 
                     iconName={product.icon} 
-                    size={28} 
+                    size={28}
                   />
                 </View>
 
