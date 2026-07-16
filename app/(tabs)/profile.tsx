@@ -1,11 +1,13 @@
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import EmployeeDigitalCard from '@/components/widgets/employee-card';
+import { useAuth } from '@/contexts/auth.context';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const { signOut } = useAuth();
 
   // Mock states for interactive settings
   const [biometricsActive, setBiometricsActive] = useState(true);
@@ -127,10 +129,10 @@ export default function ProfileScreen() {
           </TouchableOpacity>
 
           {/* Row 2: Sign Out */}
-          <TouchableOpacity className="flex-row justify-between items-center px-4 py-4">
+          <TouchableOpacity onPress={signOut} className="flex-row justify-between items-center px-4 py-4">
             <View className="flex-row items-center gap-3">
               <IconSymbol name="person.badge.key.fill" size={18} color="#ef4444" />
-              <Text className="text-red-500 font-extrabold text-sm">Disconnect Card</Text>
+              <Text className="text-red-500 font-extrabold text-sm">Logout</Text>
             </View>
             <IconSymbol name="chevron.right" size={16} color="#ef4444" />
           </TouchableOpacity>
