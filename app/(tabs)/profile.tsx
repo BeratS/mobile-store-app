@@ -1,4 +1,5 @@
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import EmployeeDigitalCard from '@/components/widgets/employee-card';
 import React, { useState } from 'react';
 import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 
@@ -30,40 +31,8 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        {/* 2. Premium Enterprise Security ID Card (ID-1 Aspect Ratio) */}
-        <View className="w-full bg-slate-800 dark:bg-slate-950 aspect-[1.58/1] rounded-3xl p-6 shadow-2xl relative overflow-hidden mb-6 border border-slate-800">
-          {/* Cybernetic geometric circles */}
-          <View className="absolute -right-20 -bottom-20 w-56 h-56 bg-primary/10 rounded-full border border-primary/10" />
-          <View className="absolute -left-12 -top-12 w-36 h-36 bg-slate-900 rounded-full" />
-
-          {/* Card Top Row */}
-          <View className="flex-row justify-between items-start z-10">
-            <View>
-              <Text className="text-white text-lg font-black tracking-widest leading-none">ENDAVA</Text>
-              <Text className="text-primary text-[9px] font-bold uppercase tracking-widest mt-1">
-                Senior Developer (Engineer)
-              </Text>
-            </View>
-            {/* Corporate smartchip icon */}
-            <View className="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl">
-              <IconSymbol name="cpu" size={20} color="#ff5640" />
-            </View>
-          </View>
-
-          {/* Card Bottom Row */}
-          <View className="mt-auto flex-row justify-between items-end z-10">
-            <View>
-              <Text className="text-white font-extrabold text-base tracking-wide">Berat Sulimani</Text>
-              <Text className="text-slate-500 text-[10px] font-medium tracking-widest mt-0.5">
-                Product Engineering • ID: #88241
-              </Text>
-            </View>
-            {/* Hologram-style security badge */}
-            <View className="bg-white p-2 rounded-xl shadow-inner">
-              <IconSymbol name="shield.fill" size={24} color="#192b37" />
-            </View>
-          </View>
-        </View>
+        {/* 2. Security ID Card (ID-1 Aspect Ratio) */}
+        <EmployeeDigitalCard />
 
         {/* 3. Corporate KPI Quick Stats Grid */}
         <View className="flex-row gap-3 mb-8">
@@ -92,7 +61,18 @@ export default function ProfileScreen() {
         <Text className="text-slate-900 dark:text-lightText text-lg font-bold mb-3">Security & Access</Text>
         <View className="bg-slate-100/30 dark:bg-cardBg/30 rounded-2xl border border-slate-200/40 dark:border-slate-800 mb-6 overflow-hidden">
           
-          {/* Row 1: Biometric Access */}
+          {/* Row 3: Native Device */}
+          <View className="flex-row justify-between items-center px-4 py-4 border-b border-slate-200/40 dark:border-slate-800">
+            <View className="flex-row items-center gap-3">
+              <IconSymbol name="shield.fill" size={18} color="#ff5640" />
+              <View>
+                <Text className="text-slate-900 dark:text-lightText font-bold text-sm">Biometric Lock</Text>
+                <Text className="text-slate-500 dark:text-mutedText text-[11px]">Require FaceID to unlock the pass</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Row 2: Biometric Access */}
           <View className="flex-row justify-between items-center px-4 py-4 border-b border-slate-200/40 dark:border-slate-800">
             <View className="flex-row items-center gap-3">
               <IconSymbol name="shield.fill" size={18} color="#ff5640" />
@@ -108,7 +88,7 @@ export default function ProfileScreen() {
             />
           </View>
 
-          {/* Row 2: NFC Fast Pass */}
+          {/* Row 3: NFC Fast Pass */}
           <View className="flex-row justify-between items-center px-4 py-4">
             <View className="flex-row items-center gap-3">
               <IconSymbol name="cpu" size={18} color="#3b82f6" />

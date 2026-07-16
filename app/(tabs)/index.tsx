@@ -1,14 +1,39 @@
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { QuickAccessCard } from '@/components/widgets/quick-access-card';
+import { useBookingStore } from '@/stores/useBookingStore';
 import { useRouter } from 'expo-router';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Dashboard() {
   const router = useRouter();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const { deskSlot, parkingSlot, deskFloor, parkingFloor } = useBookingStore();
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  const styles = StyleSheet.create({
+    scrollView: {
+      paddingBottom: 10,
+    },
+  });
 
   return (
     <View className="flex-1 bg-white dark:bg-darkBg">
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
 
         {/* Main Content Padding container */}
         <View className="px-6 pt-12 pb-10">
@@ -79,8 +104,14 @@ export default function Dashboard() {
                 <IconSymbol name="monitor.fill" size={16} color="#ff5640" />
                 <Text className="text-slate-500 dark:text-mutedText text-xs uppercase font-bold tracking-wider">Desk Spot</Text>
               </View>
-              <Text className="text-slate-800 dark:text-lightText text-lg font-extrabold">Desk #402</Text>
-              <Text className="text-slate-400 dark:text-slate-500 text-[10px] mt-1 font-medium">Floor 4 • Engineering Zone</Text>
+              {!deskSlot ? (
+                <Text className="text-slate-800 dark:text-lightText text-center px-2 font-extrabold">No Desk Reserved</Text>
+              ) : (
+                <>
+                  <Text className="text-slate-800 dark:text-lightText text-lg font-extrabold">Desk: {deskSlot}</Text>
+                  <Text className="text-slate-400 dark:text-slate-500 text-[10px] mt-1 font-medium">Floor: {deskFloor}</Text>
+                </>
+              )}
             </View>
 
             {/* Parking Spot Status */}
@@ -89,8 +120,14 @@ export default function Dashboard() {
                 <IconSymbol name="car.fill" size={16} color="#3b82f6" />
                 <Text className="text-slate-500 dark:text-mutedText text-xs uppercase font-bold tracking-wider">Parking Spot</Text>
               </View>
-              <Text className="text-slate-800 dark:text-lightText text-lg font-extrabold">Spot P-12</Text>
-              <Text className="text-slate-400 dark:text-slate-500 text-[10px] mt-1 font-medium">Level B2 • Ev Charger</Text>
+              {!deskSlot ? (
+                <Text className="text-slate-800 dark:text-lightText text-center px-2 font-extrabold">No Parking Reserved</Text>
+              ) : (
+                <>
+                  <Text className="text-slate-800 dark:text-lightText text-lg font-extrabold">Spot: {parkingSlot}</Text>
+                  <Text className="text-slate-400 dark:text-slate-500 text-[10px] mt-1 font-medium">Floor: {parkingFloor}</Text>
+                </>
+              )}
             </View>
 
           </View>

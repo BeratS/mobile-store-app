@@ -20,6 +20,7 @@ const MAPPING: IconMapping = {
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'arrow.left': 'arrow-back',
   calendar: 'event',
   'bubble.left.and.bubble.right.fill': 'chat',
   'person.badge.key.fill': 'badge',

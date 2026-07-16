@@ -4,14 +4,16 @@ import { StyleProp, ViewStyle } from 'react-native';
 export function IconSymbol({
   name,
   size = 24,
-  color,
-  style,
+  color = '',
+  style = {},
+  className = '',
   weight = 'regular',
 }: {
   name: SymbolViewProps['name'];
   size?: number;
-  color: string;
+  color?: string;
   style?: StyleProp<ViewStyle>;
+  className?: string;
   weight?: SymbolWeight;
 }) {
   return (
@@ -20,6 +22,7 @@ export function IconSymbol({
       tintColor={color}
       resizeMode="scaleAspectFit"
       name={name}
+      className={className || ''}
       style={[
         {
           width: size,

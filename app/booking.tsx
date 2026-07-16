@@ -1,53 +1,81 @@
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import React, { useEffect, useState } from 'react';
+import { manageWeekdayNotifications } from '@/services/notifications';
+import { useBookingStore } from '@/stores/useBookingStore';
+import React from 'react';
 import { Alert, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-// Type Definitions
 type BookingType = 'desk' | 'parking';
 
 export default function BookingScreen() {
-  const [type, setType] = useState<BookingType>('desk');
-  const [selectedFloor, setSelectedFloor] = useState<number>(5);
-  const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
+  const [type, setType] = React.useState<BookingType>('desk');
 
-  // Available floor configurations based on type
+  // 1. Get entire synced state from Zustand
+  const {
+    // Confirmed bookings
+    deskFloor,
+    deskSlot,
+    parkingFloor,
+    parkingSlot,
+    setDeskBooking,
+    setParkingBooking,
+
+    // Draft selections
+    draftDeskFloor,
+    draftDeskSlot,
+    draftParkingFloor,
+    draftParkingSlot,
+    setDraftDesk,
+    setDraftParking,
+  } = useBookingStore();
+
+  // 2. Map current display values dynamically based on selected tab ('desk' vs 'parking')
+  const selectedFloor = type === 'desk' ? draftDeskFloor : draftParkingFloor;
+  const selectedSlot = type === 'desk' ? draftDeskSlot : draftParkingSlot;
+
+  // Floor configurations based on active type
   const floorsForType = type === 'desk' ? [5, 6, 7] : [1, 2];
 
-  // Auto-switch selected floor default when changing type
-  useEffect(() => {
-    setSelectedFloor(type === 'desk' ? 5 : 1);
-    setSelectedSlot(null); // Reset selection on toggle
-  }, [type]);
-
-  // Handle floor changes
+  // Handle floor shifts (updates draft state in Zustand)
   const handleFloorChange = (floor: number) => {
-    setSelectedFloor(floor);
-    setSelectedSlot(null); // Reset selected slot on floor swap
+    if (type === 'desk') {
+      setDraftDesk(floor, null); // Clear slot on floor change
+    } else {
+      setDraftParking(floor, null);
+    }
   };
 
-  // Generate Slots dynamically based on the selection
+  // Handle slot selections
+  const handleSlotSelect = (slot: number) => {
+    if (type === 'desk') {
+      setDraftDesk(selectedFloor, slot);
+    } else {
+      setDraftParking(selectedFloor, slot);
+    }
+  };
+
+  // Generate Slots dynamically based on the current floor selection
   const getSlots = () => {
     if (type === 'desk') {
-      if (selectedFloor === 5) return Array.from({ length: 10 }, (_, i) => 50 + i); // 50 to 59
-      if (selectedFloor === 6) return Array.from({ length: 10 }, (_, i) => 60 + i); // 60 to 69
-      if (selectedFloor === 7) return Array.from({ length: 10 }, (_, i) => 70 + i); // 70 to 79 (includes 70, 71, 80 range)
+      if (selectedFloor === 5) return Array.from({ length: 10 }, (_, i) => 50 + i);
+      if (selectedFloor === 6) return Array.from({ length: 10 }, (_, i) => 60 + i);
+      if (selectedFloor === 7) return Array.from({ length: 10 }, (_, i) => 70 + i);
     } else if (type === 'parking') {
-      if (selectedFloor === 1) return Array.from({ length: 20 }, (_, i) => 1 + i);   // 1 to 20
-      if (selectedFloor === 2) return Array.from({ length: 20 }, (_, i) => 21 + i);  // 21 to 40
+      if (selectedFloor === 1) return Array.from({ length: 20 }, (_, i) => 1 + i);
+      if (selectedFloor === 2) return Array.from({ length: 20 }, (_, i) => 21 + i);
     }
     return [];
   };
 
   const slots = getSlots();
 
-  // Mock static reserved indices to make the map feel authentic and dynamic
+  // Mock static reserved positions
   const isReserved = (slot: number) => {
-    const reservedNumbers = [52, 55, 61, 68, 73, 5, 12, 18, 24, 33, 39];
-    return reservedNumbers.includes(slot);
+    const staticReservedNumbers = [52, 55, 61, 68, 73, 5, 12, 18, 24, 33, 39];
+    return staticReservedNumbers.includes(slot);
   };
 
-  // Handle Booking Action
-  const handleConfirmBooking = () => {
+  // Handle final reservation execution
+  const handleConfirmBooking = async () => {
     if (selectedSlot === null) {
       const msg = 'Please select an available slot before confirming.';
       if (Platform.OS === 'web') {
@@ -58,7 +86,22 @@ export default function BookingScreen() {
       return;
     }
 
+    // 1. Commit draft selections to your confirmed bookings
+    if (type === 'desk') {
+      setDeskBooking(selectedFloor, selectedSlot);
+    } else {
+      setParkingBooking(selectedFloor, selectedSlot);
+    }
+
+    // 2. Refresh notification schedules
+    try {
+      await manageWeekdayNotifications();
+    } catch (e) {
+      console.warn("Could not schedule notifications:", e);
+    }
+
     const receipt = `Reserved ${type === 'desk' ? `Workstation Desk #${selectedSlot}` : `Parking Space #${selectedSlot}`} on Level ${selectedFloor}.`;
+
     if (Platform.OS === 'web') {
       window.alert(`Booking Confirmed! 🎉\n\n${receipt}`);
     } else {
@@ -68,7 +111,7 @@ export default function BookingScreen() {
 
   return (
     <View className="flex-1 bg-white dark:bg-darkBg px-6 pt-12 pb-6">
-      
+
       {/* 1. Header Frame */}
       <View className="mb-6">
         <Text className="text-slate-400 dark:text-mutedText text-[10px] uppercase font-black tracking-widest">
@@ -77,6 +120,20 @@ export default function BookingScreen() {
         <Text className="text-slate-900 dark:text-lightText text-2xl font-black mt-0.5">
           Reservations
         </Text>
+        {/* Current confirmed bookings summary */}
+        <View className="mt-3">
+          <Text className="text-slate-700 dark:text-mutedText text-sm">
+            {deskSlot !== null
+              ? `Booked Desk: Floor ${deskFloor} • Workstation #${deskSlot}`
+              : 'Booked Desk: —'}
+          </Text>
+
+          <Text className="text-slate-700 dark:text-mutedText text-sm mt-1">
+            {parkingSlot !== null
+              ? `Booked Parking: Level ${parkingFloor} • Space #${parkingSlot}`
+              : 'Booked Parking: —'}
+          </Text>
+        </View>
         <Text className="text-slate-500 dark:text-mutedText text-xs mt-1">
           Lock in your dedicated workstation or parking spot for tomorrow.
         </Text>
@@ -86,9 +143,8 @@ export default function BookingScreen() {
       <View className="flex-row bg-slate-100 dark:bg-cardBg p-1.5 rounded-2xl mb-6 border border-slate-200/30 dark:border-slate-800/40">
         <TouchableOpacity
           onPress={() => setType('desk')}
-          className={`flex-1 flex-row justify-center items-center py-3 rounded-xl ${
-            type === 'desk' ? 'bg-primary shadow-sm' : ''
-          }`}
+          className={`flex-1 flex-row justify-center items-center py-3 rounded-xl ${type === 'desk' ? 'bg-primary shadow-sm' : ''
+            }`}
         >
           <IconSymbol name="monitor.fill" size={16} color={type === 'desk' ? '#fff' : '#64748b'} />
           <Text className={`font-black text-xs ml-2 ${type === 'desk' ? 'text-white' : 'text-slate-600 dark:text-mutedText'}`}>
@@ -97,9 +153,8 @@ export default function BookingScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setType('parking')}
-          className={`flex-1 flex-row justify-center items-center py-3 rounded-xl ${
-            type === 'parking' ? 'bg-primary shadow-sm' : ''
-          }`}
+          className={`flex-1 flex-row justify-center items-center py-3 rounded-xl ${type === 'parking' ? 'bg-primary shadow-sm' : ''
+            }`}
         >
           <IconSymbol name="car.fill" size={16} color={type === 'parking' ? '#fff' : '#64748b'} />
           <Text className={`font-black text-xs ml-2 ${type === 'parking' ? 'text-white' : 'text-slate-600 dark:text-mutedText'}`}>
@@ -109,7 +164,7 @@ export default function BookingScreen() {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
-        
+
         {/* 3. Level/Floor Selector Segment */}
         <Text className="text-slate-400 dark:text-mutedText uppercase text-[10px] font-black tracking-widest mb-3">
           Select {type === 'desk' ? 'Office Floor' : 'Parking Level'}
@@ -119,15 +174,13 @@ export default function BookingScreen() {
             <TouchableOpacity
               key={floor}
               onPress={() => handleFloorChange(floor)}
-              className={`flex-1 py-3.5 rounded-2xl border items-center justify-center ${
-                selectedFloor === floor
-                  ? 'bg-primary/10 border-primary'
-                  : 'bg-slate-50 dark:bg-cardBg border-slate-200/40 dark:border-slate-800'
-              }`}
+              className={`flex-1 py-3.5 rounded-2xl border items-center justify-center ${selectedFloor === floor
+                ? 'bg-primary/10 border-primary'
+                : 'bg-slate-50 dark:bg-cardBg border-slate-200/40 dark:border-slate-800'
+                }`}
             >
-              <Text className={`text-xs font-black ${
-                selectedFloor === floor ? 'text-primary' : 'text-slate-600 dark:text-lightText'
-              }`}>
+              <Text className={`text-xs font-black ${selectedFloor === floor ? 'text-primary' : 'text-slate-600 dark:text-lightText'
+                }`}>
                 {type === 'desk' ? `Floor ${floor}` : `Level ${floor}`}
               </Text>
             </TouchableOpacity>
@@ -162,23 +215,21 @@ export default function BookingScreen() {
                 <TouchableOpacity
                   key={slot}
                   disabled={occupied}
-                  onPress={() => setSelectedSlot(slot)}
-                  className={`w-[17%] aspect-square rounded-xl items-center justify-center border transition-all ${
-                    occupied
-                      ? 'bg-red-500/10 border-red-500/20'
-                      : isSelected
+                  onPress={() => handleSlotSelect(slot)}
+                  className={`w-[17%] min-h-16 aspect-square rounded-xl items-center justify-center border transition-all ${occupied
+                    ? 'bg-red-500/10 border-red-500/20'
+                    : isSelected
                       ? 'bg-primary border-primary shadow-sm shadow-primary/30'
                       : 'bg-white dark:bg-slate-900 border-slate-200/50 dark:border-slate-800'
-                  }`}
+                    }`}
                 >
-                  <IconSymbol 
-                    name={type === 'desk' ? "monitor.fill" : "car.fill"} 
-                    size={12} 
-                    color={isSelected ? '#fff' : occupied ? '#ef4444' : '#94a3b8'} 
+                  <IconSymbol
+                    name={type === 'desk' ? "monitor.fill" : "car.fill"}
+                    size={12}
+                    color={isSelected ? '#fff' : occupied ? '#ef4444' : '#94a3b8'}
                   />
-                  <Text className={`text-[10px] font-black mt-1 ${
-                    isSelected ? 'text-white' : occupied ? 'text-red-500' : 'text-slate-800 dark:text-lightText'
-                  }`}>
+                  <Text className={`text-[10px] font-black mt-1 ${isSelected ? 'text-white' : occupied ? 'text-red-500' : 'text-slate-800 dark:text-lightText'
+                    }`}>
                     {slot}
                   </Text>
                 </TouchableOpacity>
@@ -187,16 +238,18 @@ export default function BookingScreen() {
           </View>
         </View>
 
-        {/* 5. Booking Action Button */}
-        <TouchableOpacity 
+      </ScrollView>
+
+      <View className="pt-2 px-6 bg-white dark:bg-darkBg">
+        <TouchableOpacity
           onPress={handleConfirmBooking}
-          className="bg-primary w-full py-4 rounded-2xl items-center active:opacity-95 shadow-lg shadow-primary/25 mb-10"
+          className="bg-primary w-full py-4 rounded-2xl items-center active:opacity-95 shadow-lg shadow-primary/25"
         >
           <Text className="text-white font-black text-sm">
             Confirm Selection
           </Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     </View>
   );
 }
