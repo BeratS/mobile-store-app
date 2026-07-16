@@ -50,7 +50,7 @@ export function AppBar({ title, showThemeToggle = true }: AppBarProps) {
               className="bg-slate-50/50 dark:bg-zinc-950/10 p-2.5 rounded-full"
             >
               <IconSymbol
-                name={theme === 'dark' ? 'light.down.fill' : 'dark.mode.fill'}
+                name={theme === 'dark' ? 'sun.max.fill' : 'moon.fill'}
                 size={18}
                 color="#ff5640"
               />

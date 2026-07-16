@@ -1,9 +1,12 @@
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import EmployeeDigitalCard from '@/components/widgets/employee-card';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 export default function ProfileScreen() {
+  const router = useRouter();
+
   // Mock states for interactive settings
   const [biometricsActive, setBiometricsActive] = useState(true);
   const [nfcFastPass, setNfcFastPass] = useState(false);
@@ -11,7 +14,7 @@ export default function ProfileScreen() {
   return (
     <View className="flex-1 bg-white dark:bg-darkBg">
       <ScrollView className="flex-1 px-6 pt-12" showsVerticalScrollIndicator={false}>
-        
+
         {/* 1. Profile Header & Active Node */}
         <View className="flex-row items-center justify-between mb-8">
           <View className="flex-row items-center gap-4">
@@ -60,17 +63,21 @@ export default function ProfileScreen() {
         {/* 5. Settings Segment: Credentials & Security */}
         <Text className="text-slate-900 dark:text-lightText text-lg font-bold mb-3">Security & Access</Text>
         <View className="bg-slate-100/30 dark:bg-cardBg/30 rounded-2xl border border-slate-200/40 dark:border-slate-800 mb-6 overflow-hidden">
-          
+
           {/* Row 3: Native Device */}
-          <View className="flex-row justify-between items-center px-4 py-4 border-b border-slate-200/40 dark:border-slate-800">
-            <View className="flex-row items-center gap-3">
-              <IconSymbol name="shield.fill" size={18} color="#ff5640" />
-              <View>
-                <Text className="text-slate-900 dark:text-lightText font-bold text-sm">Biometric Lock</Text>
-                <Text className="text-slate-500 dark:text-mutedText text-[11px]">Require FaceID to unlock the pass</Text>
+          <TouchableOpacity
+            onPress={() => router.push('/device-native')}
+          >
+            <View className="flex-row justify-between items-center px-4 py-4 border-b border-slate-200/40 dark:border-slate-800">
+              <View className="flex-row items-center gap-3">
+                <IconSymbol name="shield.fill" size={18} color="#ff5640" />
+                <View>
+                  <Text className="text-slate-900 dark:text-lightText font-bold text-sm">Device Native</Text>
+                  <Text className="text-slate-500 dark:text-mutedText text-[11px]">Native device communication</Text>
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
 
           {/* Row 2: Biometric Access */}
           <View className="flex-row justify-between items-center px-4 py-4 border-b border-slate-200/40 dark:border-slate-800">
@@ -81,9 +88,9 @@ export default function ProfileScreen() {
                 <Text className="text-slate-500 dark:text-mutedText text-[11px]">Require FaceID to unlock the pass</Text>
               </View>
             </View>
-            <Switch 
-              value={biometricsActive} 
-              onValueChange={setBiometricsActive} 
+            <Switch
+              value={biometricsActive}
+              onValueChange={setBiometricsActive}
               trackColor={{ true: '#ff5640', false: '#cbd5e1' }}
             />
           </View>
@@ -97,9 +104,9 @@ export default function ProfileScreen() {
                 <Text className="text-slate-500 dark:text-mutedText text-[11px]">Allow tapping without opening the app</Text>
               </View>
             </View>
-            <Switch 
-              value={nfcFastPass} 
-              onValueChange={setNfcFastPass} 
+            <Switch
+              value={nfcFastPass}
+              onValueChange={setNfcFastPass}
               trackColor={{ true: '#ff5640', false: '#cbd5e1' }}
             />
           </View>
@@ -109,7 +116,7 @@ export default function ProfileScreen() {
         {/* 6. Settings Segment: Preferences */}
         <Text className="text-slate-900 dark:text-lightText text-lg font-bold mb-3">General Preferences</Text>
         <View className="bg-slate-100/30 dark:bg-cardBg/30 rounded-2xl border border-slate-200/40 dark:border-slate-800 mb-12 overflow-hidden">
-          
+
           {/* Row 1: Theme Setup */}
           <TouchableOpacity className="flex-row justify-between items-center px-4 py-4 border-b border-slate-200/40 dark:border-slate-800">
             <View className="flex-row items-center gap-3">

@@ -61,14 +61,38 @@ export default function RootLayout() {
         <Stack.Screen name="notifications" options={{
           headerShown: true,
           headerTitle: 'Notifications',
+          headerLeft: () => (
+            <Pressable onPress={() => router.back()}>
+              <View className="flex flex-row items-center gap-2 pl-2 pr-4" >
+                <IconSymbol name="arrow.left" size={24} />
+                <Text className='text-primary'>Home</Text>
+              </View>
+            </Pressable>
+          ),
         }} />
         <Stack.Screen name="add-product" options={{
           headerShown: true,
           headerTitle: 'Add Product',
+          headerLeft: () => (
+            <Pressable onPress={() => router.back()}>
+              <View className="flex flex-row items-center gap-2 pl-2 pr-4" >
+                <IconSymbol name="arrow.left" size={24} />
+                <Text className='text-primary'>Home</Text>
+              </View>
+            </Pressable>
+          ),
         }} />
         <Stack.Screen name="device-native" options={{
           headerShown: true,
           headerTitle: 'Device - Native Communication',
+          headerLeft: () => (
+            <Pressable onPress={() => router.back()}>
+              <View className="flex flex-row items-center gap-2 pl-2 pr-4" >
+                <IconSymbol name="arrow.left" size={24} />
+                <Text className='text-primary'>Home</Text>
+              </View>
+            </Pressable>
+          ),
         }} />
       </Stack>
       <StatusBar style="auto" />
