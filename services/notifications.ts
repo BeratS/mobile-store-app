@@ -1,4 +1,4 @@
-import { useBookingStore } from "@/stores/useBookingStore";
+import { useBookingStore } from "@/store/useBookingStore";
 import * as Notifications from "expo-notifications";
 
 const Weekday = {

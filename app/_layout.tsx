@@ -9,8 +9,12 @@ import "../global.css";
 import IconSymbol from '@/components/ui/icon-symbol';
 import { getAppTheme } from '@/constants/theme';
 import { AuthProvider, useAuth } from '@/contexts/auth.context';
-import { useEffect, useState } from 'react';
+import { useFetchInitialize } from '@/hooks/useFetchInitialize';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useUniwind } from 'uniwind';
+
+const queryClient = new QueryClient();
 
 // 1. Import your AuthProvider and useAuth hook
 
@@ -25,9 +29,11 @@ SplashScreen.preventAutoHideAsync();
 // --- Outer Wrapper Component ---
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <RootLayoutNav />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RootLayoutNav />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
@@ -36,42 +42,44 @@ function RootLayoutNav() {
   const { theme } = useUniwind();
   const router = useRouter();
   const segments = useSegments();
-  
+
   // Get authentication state from React Context
-  const { user, isLoading: isAuthLoading } = useAuth();
-  const [loaded, setLoaded] = useState(false);
+  const { user, isLoading: isAuthLoading, isLoggedIn } = useAuth();
+  const {
+    isLoading: isInitializeLoading,
+    error: isInitializeError
+  } = useFetchInitialize(isLoggedIn);
 
   // Handle initial Splash Screen Loading
   useEffect(() => {
-    if (loaded) {
+    // Hide splash screen when initialization finishes or fails
+    if (!isInitializeLoading || isInitializeError) {
       SplashScreen.hideAsync();
     }
-
-    const timer = setTimeout(() => {
-      setLoaded(true);
-    }, 1000); // Simulate a 1-second loading time
-
-    return () => clearTimeout(timer);
-  }, [loaded]);
+  }, [isInitializeLoading, isInitializeError]);
 
   // 2. Authentication Guard Redirect Logic
   useEffect(() => {
-    if (!loaded || isAuthLoading) return;
+    // 🛠️ FIX: Exit early if *either* authentication or resource initialization is loading
+    if (isAuthLoading || isInitializeLoading) return;
 
-    // Check if the user is currently on an authentication route (e.g., in the (auth) group)
-    const inAuthGroup = segments[0] === '(auth)';
+    const inAuthGroup = segments[0] === "(auth)";
 
     if (!user && !inAuthGroup) {
-      // Redirect to Login if not signed in
-      router.replace('/(auth)/login');
+      router.replace("/(auth)/login");
     } else if (user && inAuthGroup) {
-      // Redirect to Home tabs if signed in and trying to access login
-      router.replace('/(tabs)');
+      router.replace("/(tabs)");
     }
-  }, [user, isAuthLoading, loaded, segments]);
+  }, [
+    user,
+    isAuthLoading,
+    isInitializeLoading,
+    segments,
+    router,
+  ]);
 
   // Show a clean dark fallback loading state if resources or auth check are active
-  if (!loaded || isAuthLoading) {
+  if (isAuthLoading || isInitializeLoading) {
     return (
       <View className="flex-1 bg-slate-950 items-center justify-center">
         <ActivityIndicator size="large" color="#ff5640" />
@@ -88,7 +96,7 @@ function RootLayoutNav() {
         {/* Main Application Screens */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="nfc-simulate" options={{ headerShown: false }} />
-        
+
         <Stack.Screen name="booking" options={{
           headerShown: true,
           headerTitle: 'Booking',

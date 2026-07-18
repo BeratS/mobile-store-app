@@ -1,6 +1,6 @@
 import IconSymbol from '@/components/ui/icon-symbol';
 import { QuickAccessCard } from '@/components/widgets/quick-access-card';
-import { useBookingStore } from '@/stores/useBookingStore';
+import { useBookingStore } from '@/store/useBookingStore';
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';

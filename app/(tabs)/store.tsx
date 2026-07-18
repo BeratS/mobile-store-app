@@ -1,6 +1,6 @@
 import IconSymbol from '@/components/ui/icon-symbol';
 import { ProductImageOrIcon } from '@/components/ui/product-image';
-import { useCartStore } from '@/stores/useCartStore';
+import { useCartStore } from '@/store/useCartStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';

@@ -39,6 +39,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="users"
+        options={{
+          title: 'All Users',
+          tabBarIcon: ({ color }) => <IconSymbol size={26} name="person.badge.key.fill" color={color} />,
+          header: () => <AppBar title="Endava - Users" />
+        }}
+      />
+      <Tabs.Screen
         name="ai"
         options={{
           title: 'AI Copilot',

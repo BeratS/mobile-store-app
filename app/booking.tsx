@@ -1,6 +1,6 @@
 import IconSymbol from '@/components/ui/icon-symbol';
 import { manageWeekdayNotifications } from '@/services/notifications';
-import { useBookingStore } from '@/stores/useBookingStore';
+import { useBookingStore } from '@/store/useBookingStore';
 import React from 'react';
 import { Alert, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 

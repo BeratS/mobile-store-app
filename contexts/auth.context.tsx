@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 type User = {
@@ -10,29 +11,29 @@ type User = {
 
 type AuthContextType = {
   user: User | null;
+  isLoggedIn: boolean;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const STORAGE_KEY = '@user_session';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Check if user session exists on app startup
+  // Restore session from AsyncStorage on app startup
   useEffect(() => {
     async function loadStorageData() {
       try {
-        // Mocking session restoration. Replace with SecureStore or AsyncStorage later!
-        // const savedUser = await SecureStore.getItemAsync('user_session');
-        const savedUser = null; 
+        const savedUser = await AsyncStorage.getItem(STORAGE_KEY);
         if (savedUser) {
           setUser(JSON.parse(savedUser));
         }
       } catch (e) {
-        console.error("Failed to restore session", e);
+        console.error("Failed to restore session from AsyncStorage", e);
       } finally {
         setIsLoading(false);
       }
@@ -51,11 +52,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email,
         password,
       };
-      
+
+      // Save to React State & Persist to AsyncStorage
       setUser(mockUser);
-      // await SecureStore.setItemAsync('user_session', JSON.stringify(mockUser));
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(mockUser));
     } catch (error) {
       console.error("Login failed", error);
+      throw error; // Propagate error so UI layer can catch it
     } finally {
       setIsLoading(false);
     }
@@ -64,8 +67,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = async () => {
     setIsLoading(true);
     try {
+      // Wipe state & Clear AsyncStorage
       setUser(null);
-      // await SecureStore.deleteItemAsync('user_session');
+      await AsyncStorage.removeItem(STORAGE_KEY);
     } catch (error) {
       console.error("Logout failed", error);
     } finally {
@@ -73,14 +77,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const isLoggedIn = user?.id !== null;
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, isLoading, isLoggedIn, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-// Custom hook for easy consumption
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
