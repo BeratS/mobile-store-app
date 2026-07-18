@@ -3,7 +3,7 @@ import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { AppBar } from '@/components/ui/app-bar';
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import IconSymbol from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useUniwind } from 'uniwind';
 

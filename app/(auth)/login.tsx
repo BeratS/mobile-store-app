@@ -1,4 +1,4 @@
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import IconSymbol from '@/components/ui/icon-symbol';
 import { useAuth } from '@/contexts/auth.context';
 import React, { useState } from 'react';
 import {
@@ -51,7 +51,7 @@ export default function LoginScreen() {
                 keyboardShouldPersistTaps="handled"
                 showsVerticalScrollIndicator={false}
             >
-                <View className="flex-1 justify-center px-8 py-12">
+                <View className="flex-1 justify-center px-8 py-12 w-full max-w-xl mx-auto">
 
                     {/* 1. Header Branding */}
                     <View className="items-center mb-10">

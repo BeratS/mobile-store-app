@@ -1,4 +1,4 @@
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import IconSymbol from '@/components/ui/icon-symbol';
 import EmployeeDigitalCard from '@/components/widgets/employee-card';
 import { useAuth } from '@/contexts/auth.context';
 import { useRouter } from 'expo-router';

@@ -1,4 +1,4 @@
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import IconSymbol from '@/components/ui/icon-symbol';
 import { QuickAccessCard } from '@/components/widgets/quick-access-card';
 import { useBookingStore } from '@/stores/useBookingStore';
 import { useRouter } from 'expo-router';

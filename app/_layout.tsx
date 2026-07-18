@@ -6,7 +6,7 @@ import 'react-native-reanimated';
 
 import "../global.css";
 
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import IconSymbol from '@/components/ui/icon-symbol';
 import { getAppTheme } from '@/constants/theme';
 import { AuthProvider, useAuth } from '@/contexts/auth.context';
 import { useEffect, useState } from 'react';
@@ -95,7 +95,7 @@ function RootLayoutNav() {
           headerLeft: () => (
             <Pressable onPress={() => router.back()}>
               <View className="flex flex-row items-center gap-2 pl-2 pr-4" >
-                <IconSymbol name="arrow.left" size={24} />
+                <IconSymbol name="arrow.left" size={24} className="text-primary" />
                 <Text className='text-primary'>Home</Text>
               </View>
             </Pressable>
@@ -108,7 +108,7 @@ function RootLayoutNav() {
           headerLeft: () => (
             <Pressable onPress={() => router.back()}>
               <View className="flex flex-row items-center gap-2 pl-2 pr-4" >
-                <IconSymbol name="arrow.left" size={24} />
+                <IconSymbol name="arrow.left" size={24} className="text-primary" />
                 <Text className='text-primary'>Home</Text>
               </View>
             </Pressable>
@@ -121,7 +121,7 @@ function RootLayoutNav() {
           headerLeft: () => (
             <Pressable onPress={() => router.back()}>
               <View className="flex flex-row items-center gap-2 pl-2 pr-4" >
-                <IconSymbol name="arrow.left" size={24} />
+                <IconSymbol name="arrow.left" size={24} className="text-primary" />
                 <Text className='text-primary'>Home</Text>
               </View>
             </Pressable>
@@ -134,7 +134,7 @@ function RootLayoutNav() {
           headerLeft: () => (
             <Pressable onPress={() => router.back()}>
               <View className="flex flex-row items-center gap-2 pl-2 pr-4" >
-                <IconSymbol name="arrow.left" size={24} />
+                <IconSymbol name="arrow.left" size={24} className="text-primary" />
                 <Text className='text-primary'>Home</Text>
               </View>
             </Pressable>

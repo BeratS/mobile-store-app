@@ -1,4 +1,4 @@
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import IconSymbol from '@/components/ui/icon-symbol';
 import { Accelerometer } from 'expo-sensors';
 import React, { useEffect } from 'react';
 import { Platform, Text, View } from 'react-native';

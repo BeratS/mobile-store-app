@@ -1,4 +1,4 @@
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import IconSymbol from '@/components/ui/icon-symbol';
 import { ProductImageOrIcon } from '@/components/ui/product-image';
 import { useCartStore } from '@/stores/useCartStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
