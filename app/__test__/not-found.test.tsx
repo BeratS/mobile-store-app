@@ -22,8 +22,8 @@ describe('<NotFoundScreen />', () => {
     jest.clearAllMocks();
   });
 
-  test('renders the error message and the redirect link text', () => {
-    render(<NotFoundScreen />);
+  test('renders the error message and the redirect link text', async () => {
+    await render(<NotFoundScreen />);
 
     // Check that the error message is present
     expect(screen.getByText('This screen doesn`t exist.')).toBeTruthy();
@@ -34,7 +34,7 @@ describe('<NotFoundScreen />', () => {
 
   test('navigates to the home screen when the link is pressed', async () => {
     const user = userEvent.setup();
-    render(<NotFoundScreen />);
+    await render(<NotFoundScreen />);
 
     // Locate the clickable link text
     const linkButton = screen.getByText('Go to home screen!');

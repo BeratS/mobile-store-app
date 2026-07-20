@@ -6,6 +6,9 @@ jest.mock("expo-router", () => ({
   useRouter: () => ({
     push: jest.fn(),
   }),
+  useFocusEffect: (callback: () => void) => {
+    callback();
+  },
 }));
 
 jest.mock("@/store/useCartStore", () => ({
